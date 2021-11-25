@@ -17,6 +17,7 @@ run-local:
 		-p ${host_port}:${container_port} \
 		-v $(CURDIR)/${src_dir}:/app \
 		-v ~/.config/gcloud/application_default_credentials.json:/root/.config/gcloud/application_default_credentials.json \
+		-e GOOGLE_CLOUD_PROJECT=${GCP_PROJECT} \
 		lighthouse | sed -e "s/${container_port}/${host_port}/g"
 
 build-gcr:

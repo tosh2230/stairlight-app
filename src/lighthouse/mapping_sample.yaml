@@ -2,14 +2,14 @@ mapping:
   - bucket: stairlight
     file_suffix: sql/test_a/test_a.sql
     tables:
-      - table: PROJECT_1.DATASET_1.TABLE_1
+      - table: PROJECT_A.DATASET_1.TABLE_1
     uri: gs://stairlight/sql/test_a/test_a.sql
   - bucket: stairlight
     file_suffix: sql/test_b/test_b.sql
     tables:
-      - table: PROJECT_2.DATASET_2.TABLE_2
+      - table: PROJECT_A.DATASET_2.TABLE_2
         params:
-          PROJECT: "PROJECT_1"
+          PROJECT: "PROJECT_A"
           DATASET: DATASET_1
           TABLE: TABLE_1
     uri: gs://stairlight/sql/test_b/test_b.sql
