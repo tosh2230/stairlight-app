@@ -1,3 +1,9 @@
 # Stairlight-app
 
-A web application that shows table dependency map with [tosh2230/stairlight](https://github.com/tosh2230/stairlight), using [Graphviz](https://github.com/xflr6/graphviz), [Streamlit](https://github.com/streamlit/streamlit) and [Google Cloud Run](https://cloud.google.com/run).
+This application renders a table dependency map with [tosh2230/stairlight](https://github.com/tosh2230/stairlight).
+
+Libraries and services used in this app are below.
+
+- [Graphviz](https://github.com/xflr6/graphviz)
+- [Streamlit](https://github.com/streamlit/streamlit)
+- [Google Cloud Run](https://cloud.google.com/run)
