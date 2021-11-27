@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "lighthouse"
+name = "stairlight-app"
 version = "0.1.0"
 description = ""
 authors = ["tosh2230 <rev.to12@gmail.com>"]
@@ -16,6 +16,13 @@ isort = "^5.10.1"
 black = "^21.11b0"
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+line_length = 88
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

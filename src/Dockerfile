@@ -12,4 +12,4 @@ WORKDIR /app
 CMD poetry run streamlit run app.py \
     --browser.serverAddress="0.0.0.0" \
     --server.port=${PORT} \
-    --server.baseUrlPath="/lighthouse"
+    --server.baseUrlPath=""
