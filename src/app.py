@@ -2,8 +2,9 @@ import streamlit as st
 from graphviz import Digraph
 from stairlight import StairLight
 
-TITLE = "Table Dependency Map"
+TITLE = "Table Dependency Graph"
 BASE_COLOR = "#e8e1cc"
+BACKGROUND_COLOR = "#0e1117"
 SELECTED_NODE_COLOR = "green"
 RELATIVE_NODE_COLOR = "blue"
 LABEL_COLOR = "#bab0ac"
@@ -11,87 +12,97 @@ TABLE_NOT_SELECTED = "-"
 
 
 @st.experimental_memo
-def call_stairlight():
+def call_stairlight() -> StairLight:
     return StairLight()
 
 
-def get_table_set(dependency_map):
+def get_table_set(dependency_map: dict) -> set:
     table_set = set(TABLE_NOT_SELECTED)
-    for downstream_table, upstream_dict in dependency_map.items():
-        table_set.add(downstream_table)
-        for upstream_table in upstream_dict:
-            table_set.add(upstream_table)
+    for downstairs, upstairs_dict in dependency_map.items():
+        table_set.add(downstairs)
+        for upstairs in upstairs_dict:
+            table_set.add(upstairs)
     return sorted(table_set)
 
 
-def create_relative_nodes(graph, rendered_table_set, downstream, upstream):
-    graph.node(downstream[0], color=downstream[1])
-    graph.node(upstream[0], color=upstream[1])
-    rendered_table_set.add(downstream[0])
-    rendered_table_set.add(upstream[0])
+def create_node(
+    graph: Digraph, table: str, color: str, rendered_table_set: set
+) -> None:
+    graph.node(table, color=color)
+    rendered_table_set.add(table)
 
 
-def render_graph(stairlight, graph, selected_table, is_set_label):
-    upstream_tables: list = stairlight.up(
+def render_graph(
+    graph: Digraph, stairlight: StairLight, selected_table: str, is_set_label: bool
+) -> None:
+    upstairs_list: list = stairlight.up(
         table_name=selected_table, recursive=True, verbose=False
     )
-    downstream_tables: list = stairlight.down(
+    downstairs_list: list = stairlight.down(
         table_name=selected_table, recursive=True, verbose=False
     )
-    relative_tables: list = upstream_tables + downstream_tables
+    relative_tables = upstairs_list + downstairs_list
 
     rendered_table_set = set()
-    for downstream_table, upstream_dict in stairlight.mapped.items():
-        for upstream_table, upstream_details in upstream_dict.items():
+    for downstairs, upstairs_dict in stairlight.mapped.items():
+        for upstairs, upstairs_details in upstairs_dict.items():
             is_create = False
-
             label = None
-            if is_set_label:
-                label = upstream_details.get("uri")
 
-            if downstream_table == selected_table:
-                downstream_color = SELECTED_NODE_COLOR
-                upstream_color = RELATIVE_NODE_COLOR
+            if is_set_label:
+                label = upstairs_details.get("uri")
+
+            if downstairs == selected_table:
+                downstairs_color = SELECTED_NODE_COLOR
+                upstairs_color = RELATIVE_NODE_COLOR
                 is_create = True
-            elif upstream_table == selected_table:
-                downstream_color = RELATIVE_NODE_COLOR
-                upstream_color = SELECTED_NODE_COLOR
+            elif upstairs == selected_table:
+                downstairs_color = RELATIVE_NODE_COLOR
+                upstairs_color = SELECTED_NODE_COLOR
                 is_create = True
-            elif upstream_table in relative_tables:
-                downstream_color = upstream_color = RELATIVE_NODE_COLOR
+            elif upstairs in relative_tables:
+                downstairs_color = upstairs_color = RELATIVE_NODE_COLOR
                 is_create = True
             elif (
-                downstream_table not in rendered_table_set
-                and upstream_table not in rendered_table_set
+                downstairs not in rendered_table_set
+                and upstairs not in rendered_table_set
             ):
-                downstream_color = upstream_color = BASE_COLOR
+                downstairs_color = upstairs_color = BASE_COLOR
                 is_create = True
 
             if is_create:
-                create_relative_nodes(
+                create_node(
                     graph=graph,
+                    table=downstairs,
+                    color=downstairs_color,
                     rendered_table_set=rendered_table_set,
-                    downstream=(downstream_table, downstream_color),
-                    upstream=(upstream_table, upstream_color),
+                )
+                create_node(
+                    graph=graph,
+                    table=upstairs,
+                    color=upstairs_color,
+                    rendered_table_set=rendered_table_set,
                 )
 
             graph.edge(
-                upstream_table,
-                downstream_table,
+                upstairs,
+                downstairs,
                 label=label,
-                tooltip=upstream_details.get("uri"),
+                tooltip=upstairs_details.get("uri"),
             )
 
 
-def create_graph(stairlight, selected_table, is_set_label):
+def create_graph(
+    stairlight: StairLight, selected_table: str, is_set_label: bool
+) -> Digraph:
     graph = Digraph(TITLE, format="svg")
-    graph.attr(bgcolor="#0e1117")
+    graph.attr(bgcolor=BACKGROUND_COLOR)
     graph.attr("node", shape="box", color=BASE_COLOR, fontcolor=BASE_COLOR)
     graph.attr("edge", color=BASE_COLOR, fontcolor=LABEL_COLOR)
 
     render_graph(
-        stairlight=stairlight,
         graph=graph,
+        stairlight=stairlight,
         selected_table=selected_table,
         is_set_label=is_set_label,
     )
@@ -99,9 +110,9 @@ def create_graph(stairlight, selected_table, is_set_label):
 
 
 def main():
-    st.set_page_config(layout="wide")
+    st.set_page_config(page_title="Stairlight", layout="wide")
     st.title(TITLE)
-    st.markdown("This is a demo app using Stairlight.")
+    st.markdown("Stairlight demo app")
 
     stairlight = call_stairlight()
 
@@ -132,14 +143,19 @@ def main():
         if selected_table == TABLE_NOT_SELECTED:
             st.json(stairlight.mapped)
         else:
-            st.subheader("Upstream")
-            st.json(
-                stairlight.up(table_name=selected_table, recursive=True, verbose=True)
+            result_up = stairlight.up(
+                table_name=selected_table, recursive=True, verbose=True
             )
-            st.subheader("Downstream")
-            st.json(
-                stairlight.down(table_name=selected_table, recursive=True, verbose=True)
+            if result_up.get(selected_table):
+                st.subheader("Upstairs")
+                st.json(result_up)
+
+            result_down = stairlight.down(
+                table_name=selected_table, recursive=True, verbose=True
             )
+            if result_down.get(selected_table):
+                st.subheader("Downstairs")
+                st.json(result_down)
 
 
 if __name__ == "__main__":
