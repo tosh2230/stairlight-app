@@ -4,12 +4,16 @@ COPY poetry.lock pyproject.toml ./
 RUN apt-get dist-upgrade && \
     apt-get update && \
     apt-get install -y build-essential graphviz && \
-    python -m pip install --upgrade pip poetry && \
+    python -m pip install --upgrade pip && \
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - && \
+    export PATH=${HOME}/.poetry/bin:${PATH} && \
+    poetry config virtualenvs.create false && \
     poetry install --no-dev
 
 EXPOSE 8080
 WORKDIR /app
-CMD poetry run streamlit run app.py \
+COPY app.py mapping_sample.yaml stairlight.yaml ./
+CMD streamlit run app.py \
     --browser.serverAddress="0.0.0.0" \
     --server.port=${PORT} \
     --server.baseUrlPath=""

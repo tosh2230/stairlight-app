@@ -32,4 +32,11 @@ run-local:
 		stairlight-app | sed -e "s/${container_port}/${host_port}/g"
 
 build-gcr:
-	@gcloud builds submit --tag gcr.io/${GOOGLE_CLOUD_PROJECT}/stairlight-app ./src
+	@cp ./poetry.lock ${src_dir}
+	@cp ./pyproject.toml ${src_dir}
+	gcloud builds submit --tag gcr.io/${GOOGLE_CLOUD_PROJECT}/stairlight-app ./src
+	@rm ${src_dir}/poetry.lock
+	@rm ${src_dir}/pyproject.toml
+
+deploy:
+	gcloud run deploy stairlight-app --image gcr.io/${GOOGLE_CLOUD_PROJECT}/stairlight-app --region us-central1

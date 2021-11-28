@@ -909,7 +909,7 @@ python-versions = ">=3.6"
 name = "platformdirs"
 version = "2.4.0"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -1493,7 +1493,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1, <3.10"
-content-hash = "e809929ff07678324ae58830fa291ee7b3c81bdccd2aca0f8ca4c1ae7caa3690"
+content-hash = "cb7eff73e48e98f7286358acea1064338e7c52df8d2a07680b2bd07441e44f24"
 
 [metadata.files]
 altair = [
