@@ -119,7 +119,7 @@ def main():
     # Side bar
     st.sidebar.subheader("Parameters")
     table_set = get_table_set(dependency_map=stairlight.mapped)
-    selected_table = st.sidebar.selectbox("Table", list(table_set))
+    selected_table = st.sidebar.selectbox("Node", list(table_set))
 
     is_set_label = st.sidebar.checkbox("Show file names", False)
 
@@ -139,7 +139,7 @@ def main():
         use_container_width=True,
     )
 
-    with st.expander(label="Show Details", expanded=False):
+    with st.expander(label="Details", expanded=False):
         if selected_table == TABLE_NOT_SELECTED:
             st.json(stairlight.mapped)
         else:

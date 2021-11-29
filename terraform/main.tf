@@ -42,18 +42,18 @@ resource "google_cloud_run_service" "stairlight-app" {
   }
 }
 
-# resource "google_cloud_run_domain_mapping" "domain-mapping" {
-#   location = var.location
-#   name     = var.run-domain
+resource "google_cloud_run_domain_mapping" "domain-mapping" {
+  location = var.region
+  name     = var.run-domain
 
-#   metadata {
-#     namespace = var.project
-#   }
+  metadata {
+    namespace = var.project
+  }
 
-#   spec {
-#     route_name = google_cloud_run_service.stairlight-app.name
-#   }
-# }
+  spec {
+    route_name = google_cloud_run_service.stairlight-app.name
+  }
+}
 
 ##############################################
 # Service Account

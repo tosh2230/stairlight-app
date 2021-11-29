@@ -7,7 +7,7 @@ mapping:
   - bucket: stairlight
     file_suffix: sql/test_b/test_b.sql
     tables:
-      - table: PROJECT_A.DATASET_2.TABLE_2
+      - table: Organization.Repository.AppName
         params:
           PROJECT: "PROJECT_A"
           DATASET: DATASET_1
