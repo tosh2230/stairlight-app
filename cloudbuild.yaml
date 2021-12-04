@@ -1,0 +1,15 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - build
+      - "--tag=${_HOST_NAME}/$PROJECT_ID/${_IMAGE_NAME}:${_TAG}"
+      - "--file=./src/Dockerfile"
+      - .
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - push
+      - "${_HOST_NAME}/$PROJECT_ID/${_IMAGE_NAME}"
+substitutions:
+  _HOST_NAME: gcr.io
+  _IMAGE_NAME: stairlight-app
+  _TAG: latest

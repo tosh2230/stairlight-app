@@ -11,8 +11,9 @@ RUN apt-get dist-upgrade && \
     poetry install --no-dev
 
 EXPOSE 8080
+COPY .streamlit/config.toml /root/.streamlit/
 WORKDIR /app
-COPY app.py mapping_sample.yaml stairlight.yaml ./
+COPY src/app.py src/mapping_sample.yaml src/stairlight.yaml ./
 CMD streamlit run app.py \
     --browser.serverAddress="0.0.0.0" \
     --server.port=${PORT} \

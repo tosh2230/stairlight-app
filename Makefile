@@ -14,11 +14,7 @@ format:
 	poetry run black ./src
 
 build-local:
-	@cp ./poetry.lock ${src_dir}
-	@cp ./pyproject.toml ${src_dir}
-	@docker build -t stairlight-app:${version} ${src_dir}
-	@rm ${src_dir}/poetry.lock
-	@rm ${src_dir}/pyproject.toml
+	@docker build -t stairlight-app:${version} -f ${src_dir}/Dockerfile .
 
 run-local:
 	@docker run --rm \
@@ -32,11 +28,7 @@ run-local:
 		stairlight-app | sed -e "s/${container_port}/${host_port}/g"
 
 build-gcr:
-	@cp ./poetry.lock ${src_dir}
-	@cp ./pyproject.toml ${src_dir}
-	@gcloud builds submit --tag gcr.io/${GOOGLE_CLOUD_PROJECT}/stairlight-app ./src
-	@rm ${src_dir}/poetry.lock
-	@rm ${src_dir}/pyproject.toml
+	@gcloud builds submit --config=cloudbuild.yaml --ignore-file=.dockerignore
 
 deploy:
 	@gcloud run deploy stairlight-app --image gcr.io/${GOOGLE_CLOUD_PROJECT}/stairlight-app --region us-central1

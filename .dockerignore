@@ -1,0 +1,8 @@
+#!include:.gitignore
+.git/
+terraform/
+.flake8
+.python-version
+LICENSE
+Makefile
+README.md
