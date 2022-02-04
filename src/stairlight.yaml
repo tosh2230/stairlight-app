@@ -1,11 +1,11 @@
-include:
-  - type: gcs
-    project: null
-    bucket: stairlight
-    regex: "^sql/.*/*.sql$"
-    default_table_prefix: "PROJECT_A"
-exclude:
-  - type: fs
-    regex: "main/test_exclude.sql$"
-settings:
-  mapping_prefix: mapping_sample
+Include:
+  - TemplateSourceType: GCS
+    ProjectId: null
+    BucketName: stairlight
+    Regex: "^sql/.*/*.sql$"
+    DefaultTablePrefix: "PROJECT_A"
+Exclude:
+  - TemplateSourceType: File
+    Regex: "main/test_exclude.sql$"
+Settings:
+  MappingPrefix: mapping_sample
