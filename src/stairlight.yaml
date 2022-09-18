@@ -8,4 +8,4 @@ Exclude:
   - TemplateSourceType: File
     Regex: "main/test_exclude.sql$"
 Settings:
-  MappingPrefix: mapping_sample
+  MappingPrefix: mapping
