@@ -5,11 +5,12 @@ description = ""
 authors = ["tosh2230 <rev.to12@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7.2"
+python = "^3.8"
 streamlit = "^1.11.1"
 stairlight = {version = "^0.6.1", extras = ["gcs"]}
 graphviz = "^0.18.2"
 platformdirs = "^2.4.0"
+numpy = "^1.22"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
