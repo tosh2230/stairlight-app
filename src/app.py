@@ -1,6 +1,8 @@
 import streamlit as st
 from graphviz import Digraph
-from stairlight import map_key, StairLight
+from stairlight import StairLight
+from stairlight.source.config_key import MappingConfigKey
+
 
 TITLE = "Table Dependency Graph"
 BASE_COLOR = "#e8e1cc"
@@ -13,7 +15,9 @@ TABLE_NOT_SELECTED = "-"
 
 @st.experimental_memo
 def call_stairlight() -> StairLight:
-    return StairLight()
+    stairlight = StairLight()
+    stairlight.create_map()
+    return stairlight
 
 
 def get_table_set(dependency_map: dict) -> set:
@@ -50,7 +54,7 @@ def render_graph(
             label = None
 
             if is_set_label:
-                label = upstairs_details.get(map_key.URI)
+                label = upstairs_details.get(MappingConfigKey.Gcs.URI)
 
             if downstairs == selected_table:
                 downstairs_color = SELECTED_NODE_COLOR
@@ -88,7 +92,7 @@ def render_graph(
                 upstairs,
                 downstairs,
                 label=label,
-                tooltip=upstairs_details.get(map_key.URI),
+                tooltip=upstairs_details.get(MappingConfigKey.Gcs.URI),
             )
 
 

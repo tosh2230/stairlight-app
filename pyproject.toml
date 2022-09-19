@@ -5,9 +5,9 @@ description = ""
 authors = ["tosh2230 <rev.to12@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7.1"
+python = "^3.7.2"
 streamlit = "^1.11.1"
-stairlight = "^0.3.0"
+stairlight = {version = "^0.6.1", extras = ["gcs"]}
 graphviz = "^0.18.2"
 platformdirs = "^2.4.0"
 
