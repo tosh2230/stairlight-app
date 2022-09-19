@@ -6,12 +6,12 @@ RUN apt-get dist-upgrade && \
     apt-get install -y build-essential curl graphviz && \
     python -m pip install --upgrade pip && \
     curl -sSL https://install.python-poetry.org | python3 - && \
-    export PATH=${HOME}/.poetry/bin:${PATH} && \
+    export PATH=${HOME}/.local/bin:${PATH} && \
     poetry config virtualenvs.create false && \
     poetry install --only main
 
 EXPOSE 8080
-COPY .streamlit/config.toml /root/.streamlit/
+COPY .streamlit/config.toml ${HOME}/.streamlit/
 WORKDIR /app
 COPY src/app.py src/mapping.yaml src/stairlight.yaml ./
 CMD streamlit run app.py \
