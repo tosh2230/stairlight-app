@@ -15,7 +15,7 @@ numpy = "^1.22"
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
 isort = "^5.10.1"
-black = "^21.11b0"
+black = "^24.3"
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
 
